@@ -4,7 +4,7 @@ make it easy to get common datetime
 import datetime
 
 
-class FastDates:
+class DateGenerator:
     """
     just ask and get dates
     """
