@@ -97,3 +97,53 @@ class DateGenerator:
         get last day of next month
         """
         return (self.today.replace(day=1) + datetime.timedelta(days=62)).replace(day=1).isoformat()
+
+    def get_current_quarter(self):
+        """
+        get current quarter
+        """
+        year = self.today.year
+        quarter = (self.today.month-1)//3 + 1
+        return f'{year}-Q{quarter}'
+
+    def get_previous_quarter(self):
+        """
+        get previous quarter
+        """
+        three_months_ago = self.get_previous_n_months(3)[-1]
+        year = datetime.datetime.strptime(three_months_ago, '%Y-%m').year
+        month = datetime.datetime.strptime(three_months_ago, '%Y-%m').month
+        quarter = (month - 1) // 3 + 1
+        return f'{year}-Q{quarter}'
+
+    def get_previous_n_quarters(self, periods):
+        """
+        get previous n quarters
+        """
+        year = self.today.year
+        quarter = (self.today.month - 1) // 3 + 1
+
+        quarters = [(quarter - i) % 4 + 1 for i in range(2, periods + 2)]
+        years = [year + ((quarter - i) // 4) for i in range(2, periods + 2)]
+        return [f'{year}-Q{quarter}' for year, quarter in zip(years, quarters)]
+
+    def get_next_quarter(self):
+        """
+        get previous quarter
+        """
+        three_months_ago = self.get_next_n_months(3)[-1]
+        year = datetime.datetime.strptime(three_months_ago, '%Y-%m').year
+        month = datetime.datetime.strptime(three_months_ago, '%Y-%m').month
+        quarter = (month - 1) // 3 + 1
+        return f'{year}-Q{quarter}'
+
+    def get_next_n_quarters(self, periods):
+        """
+        get next n quarters
+        """
+        year = self.today.year
+        quarter = (self.today.month - 1) // 3 + 1
+
+        quarters = [(quarter + i) % 4 + 1 for i in range(0, periods)]
+        years = [year + ((quarter + i) // 4) for i in range(0, periods)]
+        return [f'{year}-Q{quarter}' for year, quarter in zip(years, quarters)]
